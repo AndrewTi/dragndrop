@@ -1,25 +1,20 @@
-.drag {
-	width: 100px;
-	height: 100px;
-	border: 1px solid black;
-	margin-left: 5px;
-	margin-top: 5px;
+.dragElements:hover {
+	cursor: pointer;
 }
 
+.dragElements:active {
+	cursor: move;
+}
+
+
 #item {
-	width: 250px;
-	height: 400px;
-	border: 1px solid black;
-	float: left;
-	left: 20px;
+	height: 100vh;
+	border-right: 1px solid black;
 	overflow-y: auto;
 }
 
 #bascket {
-	width: 250px;
-	height: 400px;
-	border: 1px solid black;
-	float: right;
-	right: 20px;
+	height: 100vh;
+	border-left: 1px solid black;
 	overflow-y: auto;
 }
