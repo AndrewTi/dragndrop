@@ -31,39 +31,43 @@ var app = angular.module('dragApp', []);
 
 			if(dragInfo.checkCoord(coordItem, coordTarg)) {
 				var i = 0;
+					if(selectArr != "items") {
+							$scope.bascket.map(function(e) {
 
-				$scope.bascket.map(function(e) {
+						if(e.id == data) {
+							$scope.bascket.splice(i,1);
+						};
 
-					if(e.id == data) {
-						$scope.bascket.splice(i,1);
+						i++;
+
+					});
+
+					$scope.items.push(select);
 					};
-					i++;
-
-				});
-				$scope.items.push(select);
 
 			}else if(dragInfo.checkCoord(coordBascket, coordTarg)) {
 				var i = 0;
-
-				$scope.items.map(function(e) {
+				if(selectArr != "bascket") {
+					$scope.items.map(function(e) {
 
 					if(e.id == data) {
 						$scope.items.splice(i,1);
 					};
+				
 					i++;
-
+				
 				});
-
-				$scope.bascket.push(select);
+					$scope.bascket.push(select);
+				}
 			};
 
 			dragElem.style.position = "static";
 			dragElem = null;
+			selectArr = null;
 			
 		};
 
 		$scope.mMove = function(e){
-			
 			if(!dragElem) return false;
 
 			dragElem.style.position = "absolute";
@@ -78,14 +82,23 @@ var app = angular.module('dragApp', []);
 
 		$scope.mDown = function(e, item) {
 			var elem = e.target;
-
-			coordItem = dataFact.getCoord(dataFact.getElId("item"));
-			coordBascket = dataFact.getCoord(dataFact.getElId("bascket"));
 			
 			if(e.which !== 1) return false;
 
+			coordItem = dataFact.getCoord(dataFact.getElId("item"));
+			coordBascket = dataFact.getCoord(dataFact.getElId("bascket"));
+
 			dragElem = elem;
 			select = item;
+			coordTarg = dataFact.getCoord(dragElem);
+
+			if (!selectArr) {
+				if (dragInfo.checkCoord(coordItem, coordTarg)) {
+					selectArr = "items";
+				}else {
+					selectArr = "bascket";
+				}
+			}
 			
 		};
 	});
