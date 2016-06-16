@@ -7,21 +7,22 @@
   <link rel="stylesheet" type="text/css" href="css/css.css">
 </head>
 <body ng-controller="dragDataCtrl" ng-cloak="">
-<div id="item">
-  <div class="drag" ng-repeat="item in items track by $index" ng-mousedown="mDown($event, item)" ng-mousemove="mMove($event)" ng-mouseup="mUp($event, $index)">
-  items
-  </div>
+{{items.length}}:{{bascket.length}}
+<div id="item"><div>
+  <div class="drag" ng-repeat="item in items track by $index" ng-mousedown="mDown($event, item)" ng-mousemove="mMove($event)" ng-mouseup="mUp(item.id)">
+  items : {{item.id}}
+  </div></div>
 </div>
 
 <div id="bascket">
-  <div class="drag" ng-repeat="item in bascket track by $index" ng-mousedown="mDown($event, item)" ng-mousemove="mMove($event)" ng-mouseup="mUp($event, $index)">
-  bascket
+  <div class="drag" ng-repeat="item in bascket track by $index" ng-mousedown="mDown($event, item)" ng-mousemove="mMove($event)" ng-mouseup="mUp(item.id)">
+  bascket : {{item.id}} 
   </div>
 </div>
 
   
   <!-- Angular Material requires Angular.js Libraries -->
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.js"></script>
+  <script src="js/angular.js"></script>
   <!-- <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js"></script> -->
   <!-- <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-aria.min.js"></script> -->
   <!-- <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-messages.min.js"></script> -->

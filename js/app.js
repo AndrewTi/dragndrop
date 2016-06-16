@@ -4,86 +4,93 @@ var app = angular.module('dragApp', []);
 		id: "1",
 		title: "GAV",
 		discription: "gavgavgav"
-	}];
-
-	var bascket = [{
-		id: "1",
+	},{
+		id: "2",
+		title: "GAV",
+		discription: "gavgavgav"
+	},{
+		id: "3",
 		title: "GAV",
 		discription: "gavgavgav"
 	}];
+
+	var bascket = [];
 
 	app.controller('dragDataCtrl', function ($scope, dataFact, dragInfo) {
 		$scope.items = item;
 		$scope.bascket = bascket;
 
-		var select = [];
+		var select;
+		var selectArr;
 		var dragElem;
-		var coordItem = dataFact.getCoord(dataFact.getElId("item"));
-		var coordBascket = dataFact.getCoord(dataFact.getElId("bascket"));
+		var coordItem;
+		var coordBascket;
 		var coordTarg;
 
-		$scope.mUp = function(data, index) {
-			var index = --index;
-			if(dragInfo.checkCoord(coordItem, coordTarg)) {
-				$scope.items.push(select);
-				$scope.bascket.splice(index,1);
-				dragElem.remove();
-			}else if(dragInfo.checkCoord(coordBascket, coordTarg)) {
-				$scope.bascket.push(select);
-				$scope.items.splice(index,1);
-				dragElem.remove();
-			}
+		$scope.mUp = function(data) {
 
-			select = null;
-			
+			if(dragInfo.checkCoord(coordItem, coordTarg)) {
+				var i = 0;
+
+				$scope.bascket.map(function(e) {
+
+					if(e.id == data) {
+						$scope.bascket.splice(i,1);
+					};
+					i++;
+
+				});
+				$scope.items.push(select);
+
+			}else if(dragInfo.checkCoord(coordBascket, coordTarg)) {
+				var i = 0;
+
+				$scope.items.map(function(e) {
+
+					if(e.id == data) {
+						$scope.items.splice(i,1);
+					};
+					i++;
+
+				});
+
+				$scope.bascket.push(select);
+			};
+
+			dragElem.style.position = "static";
 			dragElem = null;
 			
 		};
 
 		$scope.mMove = function(e){
-			var elem = dragElem;
 			
-			if(!elem) return false;
+			if(!dragElem) return false;
 
-			//document.body.appendChild(elem);
+			dragElem.style.position = "absolute";
+			dragElem.style.zIndex = "9999";
 
-			elem.style.position = "absolute";
-			elem.style.zIndex = "9999";
 			coordTarg = dataFact.getCoord(dragElem);
 
-			elem.style.left = e.pageX - elem.offsetWidth / 2 +"px";
-			elem.style.top = e.pageY - elem.offsetHeight / 2 +"px";
+			dragElem.style.left = e.pageX - dragElem.offsetWidth / 2 +"px";
+			dragElem.style.top = e.pageY - dragElem.offsetHeight / 2 +"px";
 		};
 
 
 		$scope.mDown = function(e, item) {
 			var elem = e.target;
-			console.log(item);
-			console.log(select);
 
+			coordItem = dataFact.getCoord(dataFact.getElId("item"));
+			coordBascket = dataFact.getCoord(dataFact.getElId("bascket"));
+			
 			if(e.which !== 1) return false;
 
-			dragElem = elem
+			dragElem = elem;
 			select = item;
-			console.log(select);
 			
 		};
 	});
 
 	app.factory('dataFact', function () {
-
-		function addToArr(arr,select) {
-			arr.push(select[0]);
-			select = null;
-		}
-
-		function removeElArr(arr, data) {
-			for(var i = 0, leng = arr.length; i < leng; i++) {
-				if(arr[i].id == data.id) {
-					arr.splice(i, 1);
-				}
-			}
-		}
 
 		function getCoord(elem) {
 			return {
@@ -100,8 +107,6 @@ var app = angular.module('dragApp', []);
 		};
 	
 		return {
-			addToArr: addToArr,
-			removeElArr: removeElArr,
 			getCoord: getCoord,
 			getElId: getElId
 	
@@ -109,7 +114,7 @@ var app = angular.module('dragApp', []);
 	});
 
 	app.service('dragInfo', function () {	
-		function checkCoord(elem, targ) {
+		this.checkCoord = function(elem, targ) {
 
 			var left = targ.left - elem.left;
 			var top = targ.top - elem.top;
@@ -121,10 +126,9 @@ var app = angular.module('dragApp', []);
 			return false;
 
 		};
-		return {
-			checkCoord: checkCoord
-		};
 	});
+
+
 
 
 
